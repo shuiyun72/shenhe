@@ -11,8 +11,10 @@
             <div class="box">
               <div
                 class="item"
+                :class="{'active':index == topNavSel}"
                 v-for="(item, index) in topNavList"
                 :key="index"
+                @click="navTo(item,index)"
               >
                 {{ item.name }}
               </div>
@@ -22,10 +24,13 @@
       </div>
       <div class="content">
         <div class="showpart1">
-          <div class="item" v-for="(item,index) in centerList" :key="index">
+          <div class="item" v-for="(item,index) in centerList" :key="index" @click="urlFor(item)">
             <img src="@assets/img/s7.png" class="item_img_c" alt="" />
             <div class="rongqi_bg">
               {{item.name}}
+              <div class="img_w">
+                <img :src="require('@assets/img/'+item.img)" alt="" class="img_bg">
+              </div>
             </div>
           </div>
         </div>
@@ -63,6 +68,7 @@ export default {
   components: {},
   data() {
     return {
+      topNavSel:0,
       topNavList: [
         { name: "安卓" },
         { name: "苹果" },
@@ -70,16 +76,57 @@ export default {
         { name: "BS端" },
       ],
       centerList: [
-        { name: "关" },
-        { name: "注" },
-        { name: "请" },
-        { name: "！" },
-        { name: "敬" }
+        { name: "关",img:"bs3.jpg" },
+        { name: "注",img:"bs2.jpg" },
+        { name: "安",img:"bs1.jpg" },
+        { name: "卓",img:"bs4.jpg" },
+        { name: "！",img:"bs5.jpg" }
       ],
     };
   },
   methods:{
-    
+    navTo(item,index){
+      this.topNavSel = index
+      if(index==0){
+        this.centerList = [
+          { name: "关",img:"bs3.jpg" },
+          { name: "注",img:"bs2.jpg" },
+          { name: "安",img:"bs1.jpg" },
+          { name: "卓",img:"bs4.jpg" },
+          { name: "！",img:"bs5.jpg" }
+        ]
+      }else
+      if(index==1){
+        this.centerList = [
+          { name: "关",img:"bs3.jpg" },
+          { name: "注",img:"bs2.jpg" },
+          { name: "苹",img:"bs1.jpg" },
+          { name: "果",img:"bs4.jpg" },
+          { name: "！",img:"bs5.jpg" }
+        ]
+      }else
+      if(index==2){
+        this.centerList = [
+          { name: "关",img:"bs3.jpg" },
+          { name: "注",img:"bs2.jpg" },
+          { name: "小",img:"bs1.jpg" },
+          { name: "程",img:"bs4.jpg" },
+          { name: "序",img:"bs5.jpg" }
+        ]
+      }else
+      if(index==3){
+        this.centerList = [
+          { name: "关",img:"bs3.jpg" },
+          { name: "注",img:"bs2.jpg" },
+          { name: "BS",img:"bs1.jpg" },
+          { name: "端",img:"bs4.jpg" },
+          { name: "！",img:"bs5.jpg" }
+        ]
+      }
+    },
+    urlFor(item){
+      
+    }
   },
   mounted() {
     var container = document.getElementById("container");
@@ -212,39 +259,36 @@ export default {
           margin-top: -225px;
           left: 50%;
           margin-left: -110px;
-          &:hover {
-            .rongqi_bg {
-              transform:rotateY(360deg);
-              background: rgba(0, 255, 0, 0.3);
-            }
-          }
+          
           &:nth-child(1) {
-            margin-left: calc(0 - 110px);
-            z-index:2;
+            margin-left: calc(-40% - 110px);
+            z-index:0;
+            transform: scale(.8);
           }
-
           &:nth-child(2) {
-            margin-left: calc(20% - 110px);
-            z-index:1;
-            transform: scale(.9);
-          }
-          &:nth-child(3) {
             margin-left: calc(-20% - 110px);
             z-index:1;
             transform: scale(.9);
           }
+          &:nth-child(3) {
+            margin-left: calc(0 - 110px);
+            z-index:2;
+            transform: scale(1);
+          }
           &:nth-child(4) {
-            margin-left: calc(40% - 110px);
-            transform: scale(.8);
+            margin-left: calc(20% - 110px);
+            transform: scale(.9);
           }
           &:nth-child(5) {
-            margin-left: calc(-40% - 110px);
+            z-index:0;
+            margin-left: calc(40% - 110px);
             transform: scale(.8);
           }
           .rongqi_bg {
             background: rgba(255, 255, 255, 0.3);
             // border-radius: 60px;
             position: absolute;
+            font-size: 36px;
             width: 189px;
             height: 338px;
             overflow: hidden;
@@ -253,6 +297,39 @@ export default {
             transition: all 1.5s;
             line-height: 338px;
             text-align: center;
+            cursor: pointer;
+            .img_w{
+              position: absolute;
+              width: 189px;
+              height: 0px;
+              overflow: hidden;
+              top: 50%;
+              left: 0;
+              margin-top: 0;
+              opacity: .3;
+              transition: all 1.5s;
+              transform:rotateY(180deg);
+              .img_bg{
+                 width: 189px;
+                 height: 338px;
+              }
+            }
+          }
+          &:hover {
+            .rongqi_bg {
+              transform:rotateY(180deg);
+              background: rgba(0, 255, 0, 0.3);
+               .img_w{
+                width: 189px;
+                height: 338px;
+                margin-top: -169px;
+                opacity: 1;
+                .img_bg{
+                  width: 189px;
+                  height: 338px;
+                }
+              }
+            }
           }
         }
         .item_img_c {
@@ -322,6 +399,11 @@ export default {
               border-radius: 10px;
               transition: all 1.5s;
               &:hover {
+                box-shadow: 0px 0px 10px #0f0 inset, 0px 0px 10px #ccc;
+                cursor: pointer;
+                color: #0f0;
+              }
+              &.active{
                 box-shadow: 0px 0px 10px #0f0 inset, 0px 0px 10px #ccc;
                 cursor: pointer;
                 color: #0f0;
